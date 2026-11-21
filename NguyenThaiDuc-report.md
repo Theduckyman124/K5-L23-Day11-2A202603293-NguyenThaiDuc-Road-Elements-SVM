@@ -12,7 +12,7 @@
 
 **Lần nộp (`revision`):** `1` trong manifest mới tạo cho bộ nộp đầu tiên; chưa xác minh lịch sử nộp trên kênh của lớp.
 
-**Số lần nộp lại sau Rework:** Chưa có lịch sử nộp để xác nhận.
+**Link drive:  (`revision`):** (https://drive.google.com/drive/folders/1cID_x07Wh2W8rus_IqcpUQcCEcYVBSP1?usp=sharing)
 
 Thời điểm export lấy từ trường `meta/dumped` trong XML, đã đổi sang giờ Việt Nam (UTC+7):
 
