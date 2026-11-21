@@ -1,0 +1,44 @@
+{
+  "manifest": "road-delivery/1",
+  "format": "CVAT for images 1.1",
+  "guideline": "Road v1.0",
+  "name": "NguyenThaiDuc",
+  "revision": 1,
+  "created_at": "2026-11-21T04:51:34+00:00",
+  "files": [
+    {
+      "file": "NguyenThaiDuc-front.zip",
+      "bytes": 22902,
+      "sha256": "f3d71d6ebdb74b85c0ac83b133d94c7ffddef5338c8223be3c062f97ed2f7ea0",
+      "contains_images": false,
+      "images": 12,
+      "images_unlabelled": 0,
+      "images_all_tags": 11,
+      "shapes_by_label": {
+        "lane": 29
+      }
+    },
+    {
+      "file": "NguyenThaiDuc-fisheye.zip",
+      "bytes": 27717,
+      "sha256": "f19113dd3b9b9d60d4bd9b78122d7dfcfb12753fbe6a64ab50643fb87abb1226",
+      "contains_images": false,
+      "images": 8,
+      "images_unlabelled": 0,
+      "images_all_tags": 8,
+      "shapes_by_label": {
+        "crosswalk": 14,
+        "lane": 8,
+        "road_curb": 11,
+        "traffic_light": 2,
+        "traffic_sign": 5
+      }
+    }
+  ],
+  "lint": {
+    "nặng": 16,
+    "chính": 4,
+    "nhẹ": 3
+  },
+  "note": "Tạo bởi road_check lint. Mô tả file đã gửi, không phải kết luận chất lượng."
+}

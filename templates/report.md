@@ -10,7 +10,7 @@
 
 **Phiên bản CVAT (Help → About):** Chưa xác nhận; phiên bản XML export là `1.1`, không phải phiên bản ứng dụng CVAT.
 
-**Lần nộp (`revision`):** Chưa có manifest bàn giao để xác nhận.
+**Lần nộp (`revision`):** `1` trong manifest mới tạo cho bộ nộp đầu tiên; chưa xác minh lịch sử nộp trên kênh của lớp.
 
 **Số lần nộp lại sau Rework:** Chưa có lịch sử nộp để xác nhận.
 
@@ -105,25 +105,42 @@ Lệnh đã chạy tại thư mục gốc:
 
 ```bash
 PYTHONPATH=src python3 -m road_lab.road_check selftest
-PYTHONPATH=src python3 -m road_lab.road_check lint NguyenThaiDuc-front.zip NguyenThaiDuc-fisheye.zip
+PYTHONPATH=src python3 -m road_lab.road_check lint NguyenThaiDuc-front.zip NguyenThaiDuc-fisheye.zip --manifest NguyenThaiDuc-manifest.json --name NguyenThaiDuc --revision 1
 ```
 
 Kết quả: `SELFTEST PASS`; lint đọc được **20 ảnh, 23 cảnh báo**. Selftest kiểm công cụ bằng dữ liệu tổng hợp; lint kiểm định dạng và một số quy tắc, không xác nhận nhãn đạt GT hoặc cho điểm bài nộp.
 
-Chưa có manifest và chưa xác minh trạng thái `completed` của job trên CVAT. Sau khi sửa, cần export lại, đối chiếu số shape trên job với XML và tạo manifest theo [đặc tả bàn giao](../docs/delivery_road_v1.0.md). `revision` phải phản ánh lần nộp thực tế; giữ bản trước nếu nộp lại sau Rework.
+Đã tạo [NguyenThaiDuc-manifest.json](../NguyenThaiDuc-manifest.json) với `revision=1`, ghi số ảnh, số shape, SHA-256 và 23 cảnh báo lint của hai ZIP hiện tại. Cả hai file có `contains_images=false`. Manifest mô tả bộ file, không xác nhận bài đạt chất lượng. Chưa xác minh trạng thái `completed` của job trên CVAT. Khi thay ZIP, cần tạo lại manifest để cập nhật SHA-256 và thống kê. Nếu nộp lại sau Rework, giữ bản trước rồi tăng `revision` theo [đặc tả bàn giao](../docs/delivery_road_v1.0.md).
 
 ## 6. Ảnh chụp màn hình và minh chứng XML
 
-Chưa có ảnh chụp CVAT của bài cá nhân trong thư mục. Các hình trong tài liệu hướng dẫn là ảnh demo tổng hợp, không dùng làm minh chứng bài nộp.
+Bốn ảnh dưới đây ghi lại giao diện CVAT và file XML của bài cá nhân. Ảnh camera trước thể hiện lane, road_curb, drivable và traffic_sign; ảnh fisheye thể hiện crosswalk, road_curb, traffic_light và drivable.
 
-| Minh chứng cần có | Trạng thái / nội dung cần thể hiện |
-| --- | --- |
-| Tab Labels của project | Chưa có ảnh chụp; XML đã xác nhận đủ sáu label hình học và bốn label Tag |
-| Một ảnh camera trước đã gán đủ | Chưa có ảnh chụp; cần hoàn thiện các nhóm label theo yêu cầu trước khi chụp |
-| Một ảnh fisheye, phóng to polyline cong | Chưa có ảnh chụp; cần thể hiện đường bám cung và thuộc tính sau sửa |
-| Đoạn XML có `<polyline label="lane">` | Có trích đoạn thực tế bên dưới; chưa có ảnh chụp màn hình |
+### 6.1. Danh sách đối tượng và label trong job
 
-Trích một lane R1 của A01 từ `NguyenThaiDuc-front.zip/annotations.xml` (giữ nguyên tọa độ và thuộc tính):
+![Giao diện CVAT tại A01 với danh sách đối tượng và label trong bảng Objects](../tab_label.png)
+
+**Hình 1 — A01 trong CVAT.** Bảng Objects bên phải hiển thị `Items: 10`, gồm các đối tượng mang label `road_curb`, `traffic_sign`, `lane` và `drivable`. Ảnh minh họa cách các label được sử dụng trong job. Dù tên file là `tab_label.png`, đây là bảng Objects, chưa phải tab Labels của project; chưa thể dùng riêng ảnh này để xác nhận đầy đủ cấu hình sáu label và bốn Tag. Phần cấu hình đã được đối chiếu từ XML ở mục 1.
+
+### 6.2. Ảnh camera trước đã gán nhãn
+
+![Ảnh A01 camera trước với polyline làn và mép đường, polygon vùng lái và box biển báo](../camera_truoc_da_gan.png)
+
+**Hình 2 — Các nhóm nhãn trên ảnh camera trước A01.** Polyline màu vàng thể hiện lane; polyline màu cam thể hiện road_curb; polygon viền xanh lá thể hiện drivable; box xanh dương bao biển báo. Bảng Objects hiển thị kiểu hình tương ứng: polyline, polygon và rectangle. Ảnh cho thấy vùng lái và biển báo đã có trên giao diện CVAT, nhưng không thay thế bước kiểm thuộc tính và đối chiếu file export.
+
+### 6.3. Ảnh fisheye đã gán nhãn
+
+![Ảnh fisheye trên CVAT với crosswalk, road_curb, traffic_light, drivable và bốn Tag ảnh](../camera_fisheye_da_gan.png)
+
+**Hình 3 — Gán nhãn trên ảnh fisheye.** Ảnh thể hiện polygon crosswalk màu hồng, đường road_curb màu cam, box traffic_light màu đỏ và polygon drivable màu xanh lá. Đối tượng drivable đang mở Details với `area_type=direct`; biên vùng lái được đặt theo mép mặt đường và phần thân xe ở tiền cảnh. Bốn Tag `camera`, `weather`, `source`, `timeofday` xuất hiện ở phía trên, nhưng giá trị từng Tag chưa mở trong ảnh. Đây là ảnh tổng quan; cần bổ sung ảnh phóng to đoạn polyline cong để kiểm rõ các điểm bám cung theo yêu cầu của mẫu báo cáo.
+
+### 6.4. File XML và khai báo lane
+
+![File annotations.xml mở trong trình soạn thảo, hiển thị version 1.1 và khai báo lane kiểu polyline](../XML_image.png)
+
+**Hình 4 — Mở lại file `annotations.xml`.** Ảnh hiển thị `<version>1.1</version>`, metadata của job và khai báo label `lane` có `<type>polyline</type>`, cùng các thuộc tính `position`, `style`, `color`. Ảnh hiện dừng ở phần khai báo label trong metadata, chưa hiển thị phần tử shape `<polyline label="lane">` của một ảnh cụ thể.
+
+Để minh chứng shape thực tế, dưới đây là lane R1 của A01 trích từ `NguyenThaiDuc-front.zip/annotations.xml`, giữ nguyên tọa độ và thuộc tính:
 
 ```xml
 <polyline label="lane" source="file" occluded="0" points="660.80,679.64;510.31,579.02;422.25,516.29" z_order="0">
@@ -133,6 +150,8 @@ Trích một lane R1 của A01 từ `NguyenThaiDuc-front.zip/annotations.xml` (g
   <attribute name="kind">single</attribute>
 </polyline>
 ```
+
+**Đối chiếu ảnh chụp với bộ nộp:** Hình 1 hiển thị 10 đối tượng ở A01, trong khi XML front hiện tại chỉ có 4 shape lane tại A01. Hình 2 và hình 3 có drivable trên CVAT, nhưng hai ZIP đang dùng để thống kê ở mục 2 chưa chứa label này. Vì vậy, ảnh chụp phản ánh trạng thái chỉnh sửa khác với bản export đang có. Cần lưu nhãn, export lại hai ZIP rồi cập nhật manifest và số liệu báo cáo trước khi nộp; chưa dùng ảnh chụp để kết luận các cảnh báo lint ở mục 4 đã được sửa.
 
 ## 7. Tự đánh giá
 
